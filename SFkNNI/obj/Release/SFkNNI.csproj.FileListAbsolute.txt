@@ -1,0 +1,12 @@
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\obj\Release\SFkNNI.csprojResolveAssemblyReference.cache
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\bin\Release\SFkNNI.exe.config
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\bin\Release\SFkNNI.exe
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\bin\Release\SFkNNI.pdb
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\obj\Release\SFkNNI.exe
+D:\Tomek\Documents\Visual Studio 2012\Projects\MyKNN-AA\SFkNNI\obj\Release\SFkNNI.pdb
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\bin\Release\SFkNNI.exe.config
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\obj\Release\SFkNNI.exe
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\obj\Release\SFkNNI.pdb
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\bin\Release\SFkNNI.exe
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\bin\Release\SFkNNI.pdb
+D:\Tomek\Documents\Visual Studio 2012\Projects\SFkNNI\SFkNNI\obj\Release\SFkNNI.csprojResolveAssemblyReference.cache
