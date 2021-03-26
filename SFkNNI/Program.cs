@@ -22,7 +22,7 @@ namespace kNN
 
     class Program
     {
-        public static double SFkNN(ref List<Tuple<double?[], double>> training, Tuple<double?[], double> test, int k, bool useRangeCheck)
+        public static double SFkNN(ref List<Tuple<double?[], double>> training, Tuple<double?[], double> test, int k, bool useRangeCheck, bool weightedAvg)
         {
             // Local variables declarations
             // nearest and farthest distance
@@ -35,6 +35,8 @@ namespace kNN
             int validValues;
             // ...table of mean target values from neighbors for each feature
             double[] targetValues = new double[test.Item1.GetLength(0)];
+            // ...table of mean target value weights
+            double[] featureWeights = new double[test.Item1.GetLength(0)];
             // ...median ald low/high threshold values
             double medVal = 0;
             double lowLimit = 0;
@@ -49,6 +51,8 @@ namespace kNN
             for (int feature = 0; feature < test.Item1.GetLength(0); feature++)
             {
                 validValues = 0;
+                featureWeights[feature] = 0;
+                targetValues[feature] = 0;
                 // If calssified attribute has a value...
                 if (test.Item1[feature].HasValue)
                 {
@@ -82,8 +86,10 @@ namespace kNN
                             if (training[row].Item1[feature].HasValue)
                             {
                                 validValues++;
+                                featureWeights[feature]++;
                                 distVector.Add(new ValuePair<double, double>(training[row].Item2, Math.Abs((double)training[row].Item1[feature] - (double)test.Item1[feature])));
                             }
+                        featureWeights[feature] /= (double)training.Count;
                         // Sort result depending on the distance form the classified vector
                         distVector = distVector.OrderBy(x => x.Item2).ToList();
                         // Solve ties on eqidistant neighbors - expand the analysis window "k"
@@ -103,7 +109,19 @@ namespace kNN
                 }
             }
             // Calculate new target value
-            return targetValues.Sum()/validFeatures;
+            if (weightedAvg)
+            {
+                double result = 0;
+                for (int f = 0; f < test.Item1.GetLength(0); f++)
+                {
+                    result += targetValues[f] * featureWeights[f];
+                }
+                return result / featureWeights.Sum();
+            }
+            else
+            {
+                return targetValues.Sum() / validFeatures;
+            }
         }
 
         public static string vectorToString(Tuple<double?[], string> vector)
@@ -216,7 +234,7 @@ namespace kNN
             }
         }
 
-        public static void fillMissing(ref List<Tuple<double?[], string>> mset, out List<Tuple<double?[], string>> fset, int k, bool useRangeCheck, bool targetTypeCheck)
+        public static void fillMissing(ref List<Tuple<double?[], string>> mset, out List<Tuple<double?[], string>> fset, int k, bool useRangeCheck, bool targetTypeCheck, bool weightedAvg)
         {
             List<Tuple<double?[], double>> temp;
             Tuple<double?[], double> ttemp;
@@ -272,7 +290,7 @@ namespace kNN
                                 ttemp.Item1[jjj++] = mset[i].Item1[jj];
                             }
                         }
-                        ftemp.Item1[j] = SFkNN(ref temp, ttemp, k, useRangeCheck);
+                        ftemp.Item1[j] = SFkNN(ref temp, ttemp, k, useRangeCheck, weightedAvg);
                         if (isInteger[j]) ftemp.Item1[j] = Math.Round(ftemp.Item1[j].Value);
                     }
                     else // it is not NULL - leave as is
@@ -303,10 +321,11 @@ namespace kNN
             int k = int.Parse(args[0]);
             bool rangeCheck = (args[1] == "t" ? true : false);
             bool targetTypeCheck = (args[2] == "t" ? true : false);
+            bool weightedAvg = (args[3] == "t" ? true : false);
 
             parseCSV(misfile, out mset, out header);
 
-            fillMissing(ref mset, out fset, k, rangeCheck, targetTypeCheck);
+            fillMissing(ref mset, out fset, k, rangeCheck, targetTypeCheck, weightedAvg);
 
             saveCSV(impfile, ref fset, ref header);
 
